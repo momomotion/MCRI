@@ -1,0 +1,57 @@
+# Copyright (c) 2026 MCRI. All rights reserved.
+#
+# SPDX-License-Identifier: LicenseRef-Proprietary
+#
+# This software is the confidential and proprietary information of
+# MCRI. It must not be used, copied, redistributed or disclosed
+# without prior written authorisation.
+
+# Application-level Kconfig.
+#
+# Kconfig is Zephyr's build-time configuration language. Every `config` symbol
+# here becomes a CONFIG_* macro your C code can test with #ifdef, and a value
+# you can set in prj.conf or on the command line
+# (-DCONFIG_CBPM_DONGLE_BLE=y). Kconfig decides what is COMPILED; devicetree
+# decides what HARDWARE exists. Keep the two straight and Zephyr gets much
+# easier.
+
+menu "CBPM dongle"
+
+config CBPM_DONGLE_BLE
+	bool "Build the BLE central path (milestone M5)"
+	default n
+	select BT
+	select BT_CENTRAL
+	select BT_GATT_CLIENT
+	select BT_GATT_DM
+	help
+	  Compiles src/ble/ble_central.c and pulls in the Bluetooth host and the
+	  SoftDevice Controller. Leave this off until M5: the build is faster,
+	  the image is smaller, and there is one less subsystem between you and
+	  a bug. The `select` lines above are why you do not have to hand-write
+	  the BT Kconfig options yourself -- turning this on turns those on too.
+
+config CBPM_DONGLE_RING_SIZE
+	int "Bytes in each direction of the bridge buffer"
+	default 4096
+	range 256 32768
+	help
+	  Size of the host-to-Roo and Roo-to-host ring buffers, in bytes. This is
+	  the number that decides whether a burst is absorbed or dropped, so M4
+	  asks you to reason about it rather than guess: at 1 Mbaud the wire
+	  delivers 100 kB/s, and USB-CDC can stall for a millisecond or two at a
+	  time. Work out how many bytes arrive in that window before you change
+	  this.
+
+config CBPM_DONGLE_STATUS_LED
+	bool "Blink the on-board LED as a liveness sign"
+	default y
+	help
+	  A heartbeat you can see without a debugger attached. Cheap, and the
+	  first thing that tells you the scheduler is still running.
+
+endmenu
+
+# Every application Kconfig file must end by sourcing Zephyr's own, or none of
+# the CONFIG_* symbols the kernel and drivers define would exist.
+source "Kconfig.zephyr"
