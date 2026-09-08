@@ -38,6 +38,13 @@ vocabulary is new.
 **If it does not work:** [hardware.md](hardware.md) has the wiring and the
 flashing detail, and the four failures that account for most first days.
 
+**Troubleshooting:**
+1. If ```west build -b xiao_ble/nrf52840 -d build-dongle``` causes errors like "FATAL ERROR: command exited with status 1:", there may be an issue with the device tree label which is dependent on your version of Zephyr. \
+  Under src/cdc/cdc_link.c, change ```DEVICE_DT_GET(DT_NODELABEL(cdc_acm_uart0));``` to ```DEVICE_DT_GET(DT_NODELABEL(board_cdc_acm_uart));``` or vice versa.
+
+2. If running ```./scripts/flash.sh``` causes "zsh: permission denied: ./scripts/flash.sh", the script hasn't been given execute permission. \
+   Run ```chmod +x scripts/flash.sh``` and try again.
+
 ---
 
 ## M1 -- The host can see you
