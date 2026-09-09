@@ -1,0 +1,56 @@
+cmake:
+  application:
+    configuration-dir: '/Users/momo/Desktop/MCRI-Files/MCRI/cbpm-dongle'
+    source-dir: '/Users/momo/Desktop/MCRI-Files/MCRI/cbpm-dongle'
+  board:
+    name: 'xiao_ble'
+    path:
+     - '/opt/nordic/ncs/v3.1.0/zephyr/boards/seeed/xiao_ble'
+    qualifiers: 'nrf52840'
+    revision: ''
+  devicetree:
+    bindings-dirs:
+     - '/opt/nordic/ncs/v3.1.0/nrf/dts/bindings'
+     - '/opt/nordic/ncs/v3.1.0/zephyr/dts/bindings'
+    files:
+     - '/opt/nordic/ncs/v3.1.0/zephyr/boards/seeed/xiao_ble/xiao_ble.dts'
+     - '/Users/momo/Desktop/MCRI-Files/MCRI/cbpm-dongle/boards/xiao_ble_nrf52840.overlay'
+    include-dirs:
+     - '/opt/nordic/ncs/v3.1.0/nrf/include'
+     - '/opt/nordic/ncs/v3.1.0/nrf/dts/common'
+     - '/opt/nordic/ncs/v3.1.0/nrf/dts/riscv'
+     - '/opt/nordic/ncs/v3.1.0/nrf/dts/arm'
+     - '/opt/nordic/ncs/v3.1.0/nrf/dts'
+     - '/opt/nordic/ncs/v3.1.0/zephyr/include'
+     - '/opt/nordic/ncs/v3.1.0/zephyr/include/zephyr'
+     - '/opt/nordic/ncs/v3.1.0/zephyr/dts/common'
+     - '/opt/nordic/ncs/v3.1.0/zephyr/dts/vendor'
+     - '/opt/nordic/ncs/v3.1.0/zephyr/dts/rx'
+     - '/opt/nordic/ncs/v3.1.0/zephyr/dts/x86'
+     - '/opt/nordic/ncs/v3.1.0/zephyr/dts/xtensa'
+     - '/opt/nordic/ncs/v3.1.0/zephyr/dts/sparc'
+     - '/opt/nordic/ncs/v3.1.0/zephyr/dts/riscv'
+     - '/opt/nordic/ncs/v3.1.0/zephyr/dts/posix'
+     - '/opt/nordic/ncs/v3.1.0/zephyr/dts/arm64'
+     - '/opt/nordic/ncs/v3.1.0/zephyr/dts/arm'
+     - '/opt/nordic/ncs/v3.1.0/zephyr/dts/arc'
+     - '/opt/nordic/ncs/v3.1.0/zephyr/dts'
+    user-files:
+     - '/Users/momo/Desktop/MCRI-Files/MCRI/cbpm-dongle/boards/xiao_ble_nrf52840.overlay'
+  kconfig:
+    files:
+     - '/opt/nordic/ncs/v3.1.0/zephyr/boards/seeed/xiao_ble/xiao_ble_defconfig'
+     - '/Users/momo/Desktop/MCRI-Files/MCRI/cbpm-dongle/prj.conf'
+     - '/Users/momo/Desktop/MCRI-Files/MCRI/cbpm-dongle/build-dongle/cbpm-dongle/zephyr/.config.sysbuild'
+    user-files:
+     - '/Users/momo/Desktop/MCRI-Files/MCRI/cbpm-dongle/prj.conf'
+  toolchain:
+    name: 'zephyr'
+    path: '/opt/nordic/ncs/toolchains/5c0d382932/opt/zephyr-sdk'
+  vendor-specific:
+    nordic:
+      svdfile: '/opt/nordic/ncs/v3.1.0/modules/hal/nordic/nrfx/mdk/nrf52840.svd'
+  zephyr:
+    version: '4.1.99'
+    zephyr-base: '/opt/nordic/ncs/v3.1.0/zephyr'
+version: '0.1.0'

@@ -1,0 +1,2 @@
+osource "/Users/momo/Desktop/Code/cbpm-firmware/boards/shields/*/Kconfig.defconfig"
+osource "/opt/nordic/ncs/v3.1.0/nrf/boards/shields/*/Kconfig.defconfig"

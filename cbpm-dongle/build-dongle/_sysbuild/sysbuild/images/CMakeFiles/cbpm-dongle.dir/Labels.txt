@@ -1,0 +1,13 @@
+# Target labels
+ cbpm-dongle
+# Source files and their labels
+/Users/momo/Desktop/MCRI-Files/MCRI/cbpm-dongle/build-dongle/_sysbuild/sysbuild/images/CMakeFiles/cbpm-dongle
+/Users/momo/Desktop/MCRI-Files/MCRI/cbpm-dongle/build-dongle/_sysbuild/sysbuild/images/CMakeFiles/cbpm-dongle.rule
+/Users/momo/Desktop/MCRI-Files/MCRI/cbpm-dongle/build-dongle/_sysbuild/sysbuild/images/CMakeFiles/cbpm-dongle-complete.rule
+/Users/momo/Desktop/MCRI-Files/MCRI/cbpm-dongle/build-dongle/_sysbuild/sysbuild/images/cbpm-dongle-prefix/src/cbpm-dongle-stamp/cbpm-dongle-build.rule
+/Users/momo/Desktop/MCRI-Files/MCRI/cbpm-dongle/build-dongle/_sysbuild/sysbuild/images/cbpm-dongle-prefix/src/cbpm-dongle-stamp/cbpm-dongle-configure.rule
+/Users/momo/Desktop/MCRI-Files/MCRI/cbpm-dongle/build-dongle/_sysbuild/sysbuild/images/cbpm-dongle-prefix/src/cbpm-dongle-stamp/cbpm-dongle-download.rule
+/Users/momo/Desktop/MCRI-Files/MCRI/cbpm-dongle/build-dongle/_sysbuild/sysbuild/images/cbpm-dongle-prefix/src/cbpm-dongle-stamp/cbpm-dongle-install.rule
+/Users/momo/Desktop/MCRI-Files/MCRI/cbpm-dongle/build-dongle/_sysbuild/sysbuild/images/cbpm-dongle-prefix/src/cbpm-dongle-stamp/cbpm-dongle-mkdir.rule
+/Users/momo/Desktop/MCRI-Files/MCRI/cbpm-dongle/build-dongle/_sysbuild/sysbuild/images/cbpm-dongle-prefix/src/cbpm-dongle-stamp/cbpm-dongle-patch.rule
+/Users/momo/Desktop/MCRI-Files/MCRI/cbpm-dongle/build-dongle/_sysbuild/sysbuild/images/cbpm-dongle-prefix/src/cbpm-dongle-stamp/cbpm-dongle-update.rule

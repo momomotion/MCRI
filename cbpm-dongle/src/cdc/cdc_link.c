@@ -49,7 +49,8 @@ LOG_MODULE_REGISTER(cdc_link, LOG_LEVEL_INF);
  * NULL pointer at runtime on a bench.
  */
 static const struct device *const cdc_dev =
-	DEVICE_DT_GET(DT_NODELABEL(cdc_acm_uart0));
+	DEVICE_DT_GET(DT_NODELABEL(board_cdc_acm_uart));
+	// note: on Momo's machine the correct label is 'board_cdc_acm_uart', other versions may use label 'cdc_acm_uart0'
 
 /* Ring buffers. RING_BUF_DECLARE allocates the storage for you. */
 RING_BUF_DECLARE(cdc_tx_rb, CONFIG_CBPM_DONGLE_RING_SIZE);

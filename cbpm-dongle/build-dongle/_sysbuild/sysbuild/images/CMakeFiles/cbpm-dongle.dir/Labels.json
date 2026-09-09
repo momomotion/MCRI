@@ -1,0 +1,43 @@
+{
+	"sources" : 
+	[
+		{
+			"file" : "/Users/momo/Desktop/MCRI-Files/MCRI/cbpm-dongle/build-dongle/_sysbuild/sysbuild/images/CMakeFiles/cbpm-dongle"
+		},
+		{
+			"file" : "/Users/momo/Desktop/MCRI-Files/MCRI/cbpm-dongle/build-dongle/_sysbuild/sysbuild/images/CMakeFiles/cbpm-dongle.rule"
+		},
+		{
+			"file" : "/Users/momo/Desktop/MCRI-Files/MCRI/cbpm-dongle/build-dongle/_sysbuild/sysbuild/images/CMakeFiles/cbpm-dongle-complete.rule"
+		},
+		{
+			"file" : "/Users/momo/Desktop/MCRI-Files/MCRI/cbpm-dongle/build-dongle/_sysbuild/sysbuild/images/cbpm-dongle-prefix/src/cbpm-dongle-stamp/cbpm-dongle-build.rule"
+		},
+		{
+			"file" : "/Users/momo/Desktop/MCRI-Files/MCRI/cbpm-dongle/build-dongle/_sysbuild/sysbuild/images/cbpm-dongle-prefix/src/cbpm-dongle-stamp/cbpm-dongle-configure.rule"
+		},
+		{
+			"file" : "/Users/momo/Desktop/MCRI-Files/MCRI/cbpm-dongle/build-dongle/_sysbuild/sysbuild/images/cbpm-dongle-prefix/src/cbpm-dongle-stamp/cbpm-dongle-download.rule"
+		},
+		{
+			"file" : "/Users/momo/Desktop/MCRI-Files/MCRI/cbpm-dongle/build-dongle/_sysbuild/sysbuild/images/cbpm-dongle-prefix/src/cbpm-dongle-stamp/cbpm-dongle-install.rule"
+		},
+		{
+			"file" : "/Users/momo/Desktop/MCRI-Files/MCRI/cbpm-dongle/build-dongle/_sysbuild/sysbuild/images/cbpm-dongle-prefix/src/cbpm-dongle-stamp/cbpm-dongle-mkdir.rule"
+		},
+		{
+			"file" : "/Users/momo/Desktop/MCRI-Files/MCRI/cbpm-dongle/build-dongle/_sysbuild/sysbuild/images/cbpm-dongle-prefix/src/cbpm-dongle-stamp/cbpm-dongle-patch.rule"
+		},
+		{
+			"file" : "/Users/momo/Desktop/MCRI-Files/MCRI/cbpm-dongle/build-dongle/_sysbuild/sysbuild/images/cbpm-dongle-prefix/src/cbpm-dongle-stamp/cbpm-dongle-update.rule"
+		}
+	],
+	"target" : 
+	{
+		"labels" : 
+		[
+			"cbpm-dongle"
+		],
+		"name" : "cbpm-dongle"
+	}
+}

@@ -1,0 +1,7 @@
+default: cbpm-dongle
+build_dir: /Users/momo/Desktop/MCRI-Files/MCRI/cbpm-dongle/build-dongle
+domains:
+  - name: cbpm-dongle
+    build_dir: /Users/momo/Desktop/MCRI-Files/MCRI/cbpm-dongle/build-dongle/cbpm-dongle
+flash_order:
+  - cbpm-dongle
