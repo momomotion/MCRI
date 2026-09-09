@@ -157,7 +157,7 @@ int main(void)
 		struct dongle_status st;
 
 		status_led_toggle();
-		k_sleep(K_MSEC(500));
+		k_sleep(K_MSEC(100));
 
 		if (++ticks % 20 == 0) { /* every 10 seconds */
 			dongle_ctrl_fill_status(&st);

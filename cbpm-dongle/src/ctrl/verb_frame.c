@@ -20,7 +20,10 @@
  */
 
 #include "ctrl/verb_frame.h"
+#include "verb_frame.h"
 
+#include <stddef.h>
+#include <stdint.h>
 #include <string.h>
 
 /*
@@ -49,6 +52,9 @@ static inline void put_le16(uint8_t *p, uint16_t v)
 	p[1] = (uint8_t)(v >> 8);
 }
 
+/*
+function verb_crc16 completes a CRC-16 CCIT-False check on the incoming data
+*/
 uint16_t verb_crc16(const uint8_t *data, size_t len)
 {
 	/*
@@ -75,14 +81,61 @@ uint16_t verb_crc16(const uint8_t *data, size_t len)
 	 *
 	 * Keep `crc` in a uint16_t and the masking takes care of itself.
 	 */
-	(void)data;
-	(void)len;
-	return 0;
+
+	uint16_t crc = 0xFFFF;
+
+	for (int j=0; j<len; j++) {
+		uint16_t b = data[j];
+        crc ^= (b << 8);
+		for (int i=0; i<8; i++) {
+			if (crc & 0x8000) {
+				crc = (crc << 1)^0x1021;
+			} else {
+				crc = crc << 1;
+			}
+			crc &= 0xFFFF;
+		}
+    }
+
+	return crc;
 }
 
+/*
+verb_parse_result checks the head of the buffer to ensure frames are received 
+correctly and in full
+*/
 enum verb_parse_result verb_frame_parse(const uint8_t *buf, size_t len,
 					struct verb_frame *out, size_t *consumed)
-{
+{	
+	uint16_t arg_len = get_le16(buf + 4);
+	uint16_t frame_len = VERB_HEADER_LEN + arg_len + VERB_CRC_LEN;
+	
+	if (len<1) {
+		// length of 0, nothing received
+		consumed = (size_t)0;
+		return VERB_PARSE_INCOMPLETE;
+	} else if (buf[0] != VERB_SYNC) {
+		// incorrect first frame
+		consumed = (size_t)1;
+		return VERB_PARSE_BAD_SYNC;
+	} else if (len < VERB_HEADER_LEN) {
+		// incomplete header
+		consumed = (size_t)0;
+		return VERB_PARSE_INCOMPLETE;
+	} else if (arg_len > VERB_MAX_ARGS) {
+		// length too long, input must be invalid
+		consumed = (size_t)1;
+		return VERB_PARSE_TOO_LONG;
+	} else if (len < frame_len) {
+		consumed = (size_t)0;
+		return VERB_HEADER_LEN;
+	} else if ((verb_crc16(buf, frame_len-VERB_CRC_LEN))!=get_le16(buf + frame_len - VERB_CRC_LEN)) {
+		consumed = (size_t)frame_len;
+		return VERB_PARSE_BAD_CRC;
+	} else {
+		return VERB_PARSE_OK;
+	}
+
 	/*
 	 * TODO(M2): parse one frame from the head of the buffer.
 	 *
@@ -113,19 +166,33 @@ enum verb_parse_result verb_frame_parse(const uint8_t *buf, size_t len,
 	 * buf + VERB_HEADER_LEN, or may be left pointing there even when
 	 * arg_len is 0 -- the test does not care, but be consistent).
 	 */
-	(void)buf;
-	(void)len;
-	(void)out;
-
-	if (consumed != NULL) {
-		*consumed = 0;
-	}
-	return VERB_PARSE_INCOMPLETE;
+	
 }
 
 size_t verb_frame_encode(uint8_t verb, uint16_t request_id, const uint8_t *args,
 			 uint16_t arg_len, uint8_t *out, size_t out_cap)
 {
+	size_t total_len = VERB_HEADER_LEN + arg_len + VERB_CRC_LEN;
+
+	if (arg_len > VERB_MAX_ARGS || out_cap < total_len) {
+		return 0;
+	}
+
+	out[0] = VERB_SYNC;
+	out[1] = verb;
+
+	put_le16(out + 2, request_id);
+	put_le16(out + 4, arg_len);
+
+	if (arg_len > 0) {
+		memcpy(out + VERB_HEADER_LEN, args, arg_len);
+	}
+
+	uint16_t crc = verb_crc16(out, VERB_HEADER_LEN + arg_len);
+	put_le16(out + VERB_HEADER_LEN + arg_len, crc);
+
+	return total_len;
+
 	/*
 	 * TODO(M2): build a frame.
 	 *
@@ -143,11 +210,4 @@ size_t verb_frame_encode(uint8_t verb, uint16_t request_id, const uint8_t *args,
 	 * that with a round trip, which is the cheapest kind of protocol test
 	 * to write and the one most likely to catch a silly mistake.
 	 */
-	(void)verb;
-	(void)request_id;
-	(void)args;
-	(void)arg_len;
-	(void)out;
-	(void)out_cap;
-	return 0;
 }

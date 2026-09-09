@@ -1,0 +1,25 @@
+2026-09-09 15:02:44,388 - twister - INFO - Using Ninja..
+2026-09-09 15:02:44,716 - twister - INFO - Zephyr version: ncs-v3.1.0
+2026-09-09 15:02:44,755 - twister - DEBUG - Running cmake script /opt/nordic/ncs/v3.1.0/zephyr/cmake/verify-toolchain.cmake
+2026-09-09 15:02:44,755 - twister - DEBUG - Calling cmake: /opt/homebrew/bin/cmake -DFORMAT=json -P /opt/nordic/ncs/v3.1.0/zephyr/cmake/verify-toolchain.cmake
+2026-09-09 15:02:46,986 - twister - DEBUG - Finished running /opt/nordic/ncs/v3.1.0/zephyr/cmake/verify-toolchain.cmake
+2026-09-09 15:02:46,987 - twister - INFO - Using 'zephyr' toolchain.
+2026-09-09 15:02:49,962 - twister - DEBUG - Reading testsuite configuration files under /Users/momo/Desktop/MCRI-Files/MCRI/cbpm-dongle/tests/verb_frame...
+2026-09-09 15:02:49,963 - twister - DEBUG - Found possible testsuite in /Users/momo/Desktop/MCRI-Files/MCRI/cbpm-dongle/tests/verb_frame
+2026-09-09 15:02:49,970 - twister - DEBUG - No duplicates found.
+2026-09-09 15:02:49,974 - twister - DEBUG - platform filter: ['unit_testing']
+2026-09-09 15:02:49,974 - twister - DEBUG -   vendor filter: []
+2026-09-09 15:02:49,974 - twister - DEBUG -     arch_filter: None
+2026-09-09 15:02:49,974 - twister - DEBUG -      tag_filter: None
+2026-09-09 15:02:49,974 - twister - DEBUG -     exclude_tag: None
+2026-09-09 15:02:49,974 - twister - DEBUG - Checking platform filter: ['unit_testing']
+2026-09-09 15:02:49,975 - twister - INFO - Building initial testsuite list...
+2026-09-09 15:02:49,975 - twister - INFO - Writing JSON report /Users/momo/Desktop/MCRI-Files/MCRI/cbpm-dongle/twister-out/testplan.json
+2026-09-09 15:02:50,210 - twister - INFO - Adding tasks to the queue...
+2026-09-09 15:02:50,210 - twister - INFO - Added initial list of jobs to queue
+2026-09-09 15:02:50,243 - twister - DEBUG - Launched 8 jobs
+2026-09-09 15:02:51,027 - twister - INFO - 1 test scenarios (0 configurations) selected, 0 configurations filtered (0 by static filter, 0 at runtime).
+2026-09-09 15:02:51,028 - twister - INFO - [32m0 of 0[39m executed test configurations passed (0.00%), 0 built (not run), 0 failed, 0 errored, with no warnings in 6.64 seconds.
+2026-09-09 15:02:51,028 - twister - INFO - 0 of 0 executed test cases passed (0.00%) on 0 out of total 1104 platforms (0.00%).
+2026-09-09 15:02:51,028 - twister - INFO - [32m0[39m test configurations executed on platforms, [36m0[39m test configurations were only built.
+2026-09-09 15:02:51,028 - twister - INFO - Run completed

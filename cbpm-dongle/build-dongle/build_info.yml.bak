@@ -17,6 +17,6 @@ cmake:
      - '/Users/momo/Desktop/MCRI-Files/MCRI/cbpm-dongle/build-dongle/_sysbuild/empty.conf'
 version: '0.1.0'
 west:
-  command: '/opt/nordic/ncs/toolchains/5c0d382932/bin/west build -b xiao_ble/nrf52840 -d build-dongle'
+  command: '/opt/nordic/ncs/toolchains/5c0d382932/bin/west build --build-dir /Users/momo/Desktop/MCRI-Files/MCRI/cbpm-dongle/build-dongle /Users/momo/Desktop/MCRI-Files/MCRI/cbpm-dongle --pristine --board xiao_ble/nrf52840'
   topdir: '/opt/nordic/ncs/v3.1.0'
   version: '1.4.0'

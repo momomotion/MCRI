@@ -1,0 +1,23 @@
+{
+    "environment":{
+        "os":"posix",
+        "zephyr_version":"ncs-v3.1.0",
+        "toolchain":"zephyr",
+        "commit_date":"2025-08-13T10:13:30+02:00",
+        "run_date":"2026-09-09T05:02:46+00:00",
+        "options":{
+            "help":null,
+            "zephyr_base":null,
+            "quiet":0,
+            "command":"twister",
+            "testsuite_root":[
+                "tests/verb_frame"
+            ],
+            "inline_logs":true,
+            "platform":[
+                "unit_testing"
+            ]
+        }
+    },
+    "testsuites":[]
+}

@@ -50,7 +50,7 @@ LOG_MODULE_REGISTER(cdc_link, LOG_LEVEL_INF);
  */
 static const struct device *const cdc_dev =
 	DEVICE_DT_GET(DT_NODELABEL(board_cdc_acm_uart));
-	// note: on Momo's machine the correct label is 'board_cdc_acm_uart', other versions may use label 'cdc_acm_uart0'
+	// note: on some machines the correct label is 'board_cdc_acm_uart', other versions may use label 'cdc_acm_uart0'
 
 /* Ring buffers. RING_BUF_DECLARE allocates the storage for you. */
 RING_BUF_DECLARE(cdc_tx_rb, CONFIG_CBPM_DONGLE_RING_SIZE);
@@ -66,41 +66,41 @@ RING_BUF_DECLARE(cdc_rx_rb, CONFIG_CBPM_DONGLE_RING_SIZE);
  */
 static K_SEM_DEFINE(cdc_rx_sem, 0, 1);
 
+/*
+CDC Interrupt Service Routine
+When called, stores received bits into a ring buffer. When ring buffer is full, extra bits are lost.
+*/
 static void cdc_isr(const struct device *dev, void *user_data)
 {
 	ARG_UNUSED(user_data);
 
+	while (uart_irq_update(dev) && uart_irq_is_pending(dev)) {
+		if (uart_irq_rx_ready(dev)) {
+			uint8_t buf[64];
+			int n = uart_fifo_read(dev, buf, sizeof(buf));
+			if (n > 0) {
+				// Put what fits. What does not fit is LOST -- and in
+				// M4 you will count it rather than ignore it.
+				ring_buf_put(&cdc_rx_rb, buf, n);
+				k_sem_give(&cdc_rx_sem);
+			}
+		}
+
+		if (uart_irq_tx_ready(dev)) {
+			uint8_t *data;
+			uint32_t claimed = ring_buf_get_claim(&cdc_tx_rb, &data, 64);
+			if (claimed == 0) {
+				// Nothing left to send. Disable the TX interrupt or it
+				// fires forever and the device spends its whole life
+				// in this handler. This is THE classic mistake.
+				uart_irq_tx_disable(dev);
+			} else {
+				int sent = uart_fifo_fill(dev, data, claimed);
+				ring_buf_get_finish(&cdc_tx_rb, MAX(sent, 0));
+			}
+		}
+	}
 	/*
-	 * TODO(M1): the interrupt handler.
-	 *
-	 *   while (uart_irq_update(dev) && uart_irq_is_pending(dev)) {
-	 *
-	 *       if (uart_irq_rx_ready(dev)) {
-	 *           uint8_t buf[64];
-	 *           int n = uart_fifo_read(dev, buf, sizeof(buf));
-	 *           if (n > 0) {
-	 *               // Put what fits. What does not fit is LOST -- and in
-	 *               // M4 you will count it rather than ignore it.
-	 *               ring_buf_put(&cdc_rx_rb, buf, n);
-	 *               k_sem_give(&cdc_rx_sem);
-	 *           }
-	 *       }
-	 *
-	 *       if (uart_irq_tx_ready(dev)) {
-	 *           uint8_t *data;
-	 *           uint32_t claimed = ring_buf_get_claim(&cdc_tx_rb, &data, 64);
-	 *           if (claimed == 0) {
-	 *               // Nothing left to send. Disable the TX interrupt or it
-	 *               // fires forever and the device spends its whole life
-	 *               // in this handler. This is THE classic mistake.
-	 *               uart_irq_tx_disable(dev);
-	 *           } else {
-	 *               int sent = uart_fifo_fill(dev, data, claimed);
-	 *               ring_buf_get_finish(&cdc_tx_rb, MAX(sent, 0));
-	 *           }
-	 *       }
-	 *   }
-	 *
 	 * uart_irq_update() must be called before the _ready() queries: it
 	 * latches the current interrupt state so the answers are consistent.
 	 *
@@ -134,15 +134,15 @@ int cdc_link_init(void)
 
 	/*
 	 * TODO(M1): finish the bring-up.
-	 *
-	 *   uart_irq_callback_set(cdc_dev, cdc_isr);
-	 *   uart_irq_rx_enable(cdc_dev);
-	 *
+
 	 * Do NOT enable the TX interrupt here. It gets enabled by
 	 * cdc_link_write() when there is something to send, and the ISR
 	 * disables it again when the buffer empties. An always-on TX interrupt
 	 * with an empty buffer is an interrupt storm.
 	 */
+
+	uart_irq_callback_set(cdc_dev, cdc_isr);
+	uart_irq_rx_enable(cdc_dev);
 	(void)cdc_isr;
 
 	LOG_INF("CDC-ACM up (buffers %u bytes each way)",
@@ -154,45 +154,35 @@ size_t cdc_link_write(const uint8_t *data, size_t len)
 {
 	/*
 	 * TODO(M1):
-	 *
-	 *   uint32_t put = ring_buf_put(&cdc_tx_rb, data, len);
-	 *   if (put > 0) {
-	 *       uart_irq_tx_enable(cdc_dev);   // wake the ISR up
-	 *   }
-	 *   return put;
-	 *
 	 * Returning `put` rather than asserting on a short write is the whole
 	 * point: a full buffer is a normal condition on a link whose far end
 	 * has stopped reading, and the caller is the one who knows whether to
 	 * drop, retry or count it.
 	 */
-	ARG_UNUSED(data);
-	ARG_UNUSED(len);
-	return 0;
+
+	uint32_t put = ring_buf_put(&cdc_tx_rb, data, len);
+	if (put > 0) {
+		uart_irq_tx_enable(cdc_dev);   // wake the ISR up
+	}
+	return put;
 }
 
 size_t cdc_link_read(uint8_t *buf, size_t cap, k_timeout_t timeout)
 {
 	/*
 	 * TODO(M1):
-	 *
-	 *   uint32_t n = ring_buf_get(&cdc_rx_rb, buf, cap);
-	 *   if (n > 0) {
-	 *       return n;                       // fast path, no waiting
-	 *   }
-	 *   if (k_sem_take(&cdc_rx_sem, timeout) != 0) {
-	 *       return 0;                       // nothing arrived in time
-	 *   }
-	 *   return ring_buf_get(&cdc_rx_rb, buf, cap);
-	 *
 	 * Read first, wait second. If you wait first you will sooner or later
 	 * sleep on a semaphore whose give() happened a microsecond before you
 	 * looked, with data sitting in the buffer the whole time.
 	 */
-	ARG_UNUSED(buf);
-	ARG_UNUSED(cap);
-	ARG_UNUSED(timeout);
-	return 0;
+	uint32_t n = ring_buf_get(&cdc_rx_rb, buf, cap);
+	if (n > 0) {
+		return n;                       // fast path, no waiting
+	}
+	if (k_sem_take(&cdc_rx_sem, timeout) != 0) {
+		return 0;                       // nothing arrived in time
+	}
+	return ring_buf_get(&cdc_rx_rb, buf, cap);
 }
 
 bool cdc_link_host_present(void)
