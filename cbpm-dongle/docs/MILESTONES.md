@@ -43,7 +43,8 @@ flashing detail, and the four failures that account for most first days.
   Under src/cdc/cdc_link.c, change ```DEVICE_DT_GET(DT_NODELABEL(cdc_acm_uart0));``` to ```DEVICE_DT_GET(DT_NODELABEL(board_cdc_acm_uart));``` or vice versa.
 
 2. If running ```./scripts/flash.sh``` causes "zsh: permission denied: ./scripts/flash.sh", the script hasn't been given execute permission. \
-   Run ```chmod +x scripts/flash.sh``` and try again.
+   Run ```chmod +x scripts/flash.sh``` and try again. \
+   This also applies for ```./scripts/check.sh```.
 
 ---
 
